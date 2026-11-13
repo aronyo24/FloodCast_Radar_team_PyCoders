@@ -1,0 +1,15 @@
+# Normalise line endings in the repository to LF, whatever the checkout OS
+# does locally. Without this a Windows clone and a Linux clone of the same
+# commit produce different diffs.
+* text=auto eol=lf
+
+# Binary assets: never touch these.
+*.png   binary
+*.ico   binary
+*.jpg   binary
+*.webp  binary
+
+# Generated data - keep it out of diffs and language statistics.
+public/data/**                    linguist-generated=true
+reference/*.geojson               linguist-generated=true -diff
+package-lock.json                 linguist-generated=true -diff

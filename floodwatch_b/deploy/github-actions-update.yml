@@ -1,0 +1,45 @@
+# FloodCast Radar - "free production" update workflow (template).
+#
+# Copy to .github/workflows/update-web-data.yml in the repository that holds
+# your processing pipeline. Every day it runs the pipeline, zips the
+# resulting web_data/ and publishes it as the `web-data-latest` release asset.
+# The backend then picks it up with:
+#
+#   FLOODWATCH_WEB_DATA_URL=https://github.com/<owner>/<repo>/releases/download/web-data-latest/web_data.zip
+#   python manage.py update_floods            # from cron, or the scheduler
+#
+# The pipeline step is YOURS: replace `python pipeline/run.py` with whatever
+# produces web_data/ (the Colab notebook exported as a script, for example).
+name: update-web-data
+
+on:
+  schedule:
+    - cron: "0 23 * * *"   # 23:00 UTC = 05:00 Asia/Dhaka, before the 06:00 import
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r pipeline/requirements.txt
+      - name: Run the processing pipeline (writes web_data/)
+        env:
+          EARTHDATA_TOKEN: ${{ secrets.EARTHDATA_TOKEN }}
+        run: python pipeline/run.py --out web_data
+      - name: Package
+        run: cd web_data && zip -r ../web_data.zip .
+      - name: Publish as the web-data-latest release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release view web-data-latest >/dev/null 2>&1 || \
+            gh release create web-data-latest --title "Latest processed web_data" --notes "Updated by CI"
+          gh release upload web-data-latest web_data.zip --clobber

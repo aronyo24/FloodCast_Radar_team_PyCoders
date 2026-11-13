@@ -1,0 +1,338 @@
+@import "tailwindcss";
+
+/* ==========================================================================
+   FloodCast Radar design tokens
+
+   A dark operations shell around a light map surface: the same arrangement a
+   flight-ops or weather console uses, because a sequential red scale needs a
+   pale ground to read against while the chrome around it should recede.
+
+   Fonts are a system stack on purpose. next/font would fetch Geist from Google
+   at build time, and the demo has to survive being rebuilt with the wifi off.
+   ========================================================================== */
+
+@theme {
+  /* shell */
+  --color-ink-900: #070d18;
+  --color-ink-850: #0b1220;
+  --color-ink-800: #0f1a2b;
+  --color-ink-700: #16243a;
+  --color-ink-600: #1e3048;
+  --color-ink-500: #2a3f5c;
+  --color-ink-400: #3d5679;
+
+  --color-paper: #e9e4db;
+  --color-paper-dim: #d9d3c8;
+
+  --color-text: #e9eff8;
+  --color-text-dim: #a8bad4;
+  --color-text-faint: #7589a6;
+
+  --color-accent: #38bdf8;
+  --color-accent-dim: #0ea5e9;
+  --color-accent-deep: #075985;
+
+  /* sequential single-hue red scale (ColorBrewer Reds) - plan section 5 */
+  --color-flood-1: #fee0d2;
+  --color-flood-2: #fc9272;
+  --color-flood-3: #ef3b2c;
+  --color-flood-4: #a50f15;
+  --color-flood-none: #cbd5e1;
+
+  --color-water: #1f66ba;
+  --color-warning: #f59e0b;
+  --color-severe: #ef4444;
+  --color-ok: #34d399;
+
+  --font-sans: ui-sans-serif, system-ui, "Segoe UI Variable Display", "Segoe UI",
+    Inter, Roboto, "Helvetica Neue", Arial, "Noto Sans Bengali", sans-serif;
+  --font-mono: ui-monospace, "Cascadia Mono", "Segoe UI Mono", "SF Mono",
+    Menlo, Consolas, monospace;
+
+  --radius-card: 14px;
+}
+
+:root {
+  color-scheme: dark;
+  --shell-gutter: 16px;
+}
+
+@media (min-width: 640px) {
+  :root { --shell-gutter: 24px; }
+}
+
+@media (min-width: 1280px) {
+  :root { --shell-gutter: 32px; }
+}
+
+html {
+  background: var(--color-ink-900);
+}
+
+body {
+  background:
+    radial-gradient(1100px 620px at 12% -8%, #16305180 0%, transparent 62%),
+    radial-gradient(900px 520px at 92% 4%, #0b3a5540 0%, transparent 58%),
+    var(--color-ink-900);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Bangla needs a little more line height than Latin to stay comfortable. */
+html[data-lang="bn"] body {
+  line-height: 1.75;
+}
+
+/* ---- shared primitives -------------------------------------------------- */
+
+.shell {
+  width: 100%;
+  max-width: 1480px;
+  margin-inline: auto;
+  padding-inline: var(--shell-gutter);
+}
+
+.panel {
+  background: linear-gradient(180deg, #16243ae6 0%, #101d30e6 100%);
+  border: 1px solid var(--color-ink-600);
+  border-radius: var(--radius-card);
+  box-shadow: 0 1px 0 #ffffff0d inset, 0 18px 40px -28px #000c;
+}
+
+.panel-flat {
+  background: #101d30b3;
+  border: 1px solid var(--color-ink-700);
+  border-radius: var(--radius-card);
+}
+
+.num {
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
+
+.eyebrow {
+  font-size: 11px;
+  font-weight: 650;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-text-faint);
+}
+
+html[data-lang="bn"] .eyebrow {
+  letter-spacing: 0.04em;
+  text-transform: none;
+}
+
+/* Focus ring: one definition, visible on both the dark shell and the map. */
+:where(a, button, input, select, [tabindex]):focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+/* Every interactive control clears the 44px touch target the plan asks for. */
+.tap {
+  min-height: 44px;
+  min-width: 44px;
+}
+
+.skip-link {
+  position: absolute;
+  left: 50%;
+  top: 8px;
+  translate: -50% -200%;
+  z-index: 100;
+  padding: 10px 18px;
+  border-radius: 999px;
+  background: var(--color-accent);
+  color: #06212f;
+  font-weight: 700;
+  transition: translate 0.15s ease;
+}
+.skip-link:focus {
+  translate: -50% 0;
+}
+
+/* ---- Leaflet ------------------------------------------------------------ */
+
+.leaflet-container {
+  background: #c9d6e4;
+  font-family: var(--font-sans);
+  outline: none;
+}
+
+.leaflet-container .leaflet-control-zoom a {
+  background: #0f1a2bE6;
+  color: var(--color-text);
+  border-color: var(--color-ink-500);
+  width: 34px;
+  height: 34px;
+  line-height: 34px;
+  font-size: 18px;
+}
+.leaflet-container .leaflet-control-zoom a:hover {
+  background: var(--color-ink-600);
+  color: #fff;
+}
+.leaflet-control-attribution {
+  background: #0b1220cc !important;
+  color: var(--color-text-faint) !important;
+  font-size: 10px !important;
+}
+.leaflet-control-attribution a {
+  color: var(--color-text-dim) !important;
+}
+
+/* The radar rasters are ~520 m per pixel. Zoomed in, browser smoothing turns
+   them into a soft wash that implies detail the sensor never resolved. Showing
+   the actual pixels is both more honest and easier to read. */
+.leaflet-image-layer {
+  image-rendering: pixelated;
+}
+
+/* The district tooltip. Styled here rather than inline because Leaflet
+   re-creates the element on every hover. */
+.fw-tooltip {
+  background: #0b1220f2;
+  border: 1px solid var(--color-ink-500);
+  border-radius: 10px;
+  box-shadow: 0 16px 36px -20px #000;
+  color: var(--color-text);
+  padding: 9px 11px;
+  font-size: 12px;
+  line-height: 1.45;
+  white-space: nowrap;
+}
+.fw-tooltip::before {
+  display: none;
+}
+.fw-tooltip .fw-tooltip-name {
+  font-weight: 700;
+  font-size: 13px;
+  margin-bottom: 3px;
+}
+.fw-tooltip .fw-tooltip-row {
+  color: var(--color-text-dim);
+  font-variant-numeric: tabular-nums;
+}
+.fw-tooltip .fw-tooltip-value {
+  color: var(--color-text);
+  font-weight: 650;
+}
+.fw-tooltip .fw-tooltip-warn {
+  color: var(--color-warning);
+}
+
+/* Districts the radar only partly saw (F12). Leaflet has no fill-pattern
+   option, but it does let us put a class on the generated <path>, and CSS can
+   point `fill` at the <pattern> that FloodMapInner renders into the document.
+   The dashed outline is a second, non-colour cue for the same fact. */
+.fw-district {
+  cursor: pointer;
+  transition: fill-opacity 0.18s ease;
+}
+.fw-district.fw-partial {
+  fill: url(#fw-hatch) !important;
+  fill-opacity: 0.95 !important;
+  stroke-dasharray: 4 3;
+}
+
+/* ---- range input -------------------------------------------------------- */
+
+.fw-range {
+  appearance: none;
+  width: 100%;
+  height: 44px;
+  background: transparent;
+  cursor: pointer;
+}
+.fw-range::-webkit-slider-runnable-track {
+  height: 6px;
+  border-radius: 999px;
+  background: var(--fw-track, var(--color-ink-600));
+}
+.fw-range::-moz-range-track {
+  height: 6px;
+  border-radius: 999px;
+  background: var(--fw-track, var(--color-ink-600));
+}
+.fw-range::-webkit-slider-thumb {
+  appearance: none;
+  width: 22px;
+  height: 22px;
+  margin-top: -8px;
+  border-radius: 50%;
+  background: #fff;
+  border: 3px solid var(--color-accent-dim);
+  box-shadow: 0 2px 10px #000a;
+}
+.fw-range::-moz-range-thumb {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #fff;
+  border: 3px solid var(--color-accent-dim);
+  box-shadow: 0 2px 10px #000a;
+}
+
+/* ---- motion ------------------------------------------------------------- */
+
+@keyframes fw-fade-up {
+  from { opacity: 0; translate: 0 6px; }
+  to   { opacity: 1; translate: 0 0; }
+}
+.fw-enter {
+  animation: fw-fade-up 0.34s cubic-bezier(0.2, 0.7, 0.3, 1) both;
+}
+
+@keyframes fw-pulse {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.35; }
+}
+.fw-pulse {
+  animation: fw-pulse 1.8s ease-in-out infinite;
+}
+
+@keyframes fw-sweep {
+  from { background-position: -140% 0; }
+  to   { background-position: 240% 0; }
+}
+.fw-skeleton {
+  background: linear-gradient(
+    90deg,
+    #16243a 0%, #1e3048 40%, #16243a 80%
+  );
+  background-size: 220% 100%;
+  animation: fw-sweep 1.5s linear infinite;
+  border-radius: 8px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fw-enter, .fw-pulse, .fw-skeleton {
+    animation: none;
+  }
+  html { scroll-behavior: auto; }
+}
+
+/* ---- scrollbars --------------------------------------------------------- */
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-ink-500) transparent;
+}
+*::-webkit-scrollbar { width: 10px; height: 10px; }
+*::-webkit-scrollbar-track { background: transparent; }
+*::-webkit-scrollbar-thumb {
+  background: var(--color-ink-500);
+  border-radius: 999px;
+  border: 3px solid transparent;
+  background-clip: content-box;
+}
+*::-webkit-scrollbar-thumb:hover { background-color: var(--color-ink-400); }
+
+@media print {
+  body { background: #fff; color: #000; }
+  .no-print { display: none !important; }
+}

@@ -1,0 +1,125 @@
+{% extends "admin/base_site.html" %}
+
+{% block extrastyle %}{{ block.super }}{% include "admin/floodwatch/_styles.html" %}{% endblock %}
+
+{% block breadcrumbs %}
+<div class="breadcrumbs"><a href="{% url 'admin:index' %}">Dashboard</a> › Import data</div>
+{% endblock %}
+
+{% block content %}
+<div class="fw" id="content-main">
+  <ol class="fw-steps">
+    <li class="on">1 · Upload</li><li>2 · Check</li><li>3 · Import</li>
+  </ol>
+
+  <div class="fw-grid wide">
+    <div class="fw-card">
+      <h2 class="fw-h">Upload new analysis data</h2>
+      <form method="post" enctype="multipart/form-data" id="fw-upload">{% csrf_token %}
+        <label class="fw-drop" id="fw-drop">
+          <input type="file" name="files" id="fw-files" multiple accept=".zip,.csv,.json,.geojson,.png">
+          <div class="big">Drop files here, or click to choose</div>
+          <div class="muted" style="margin-top:6px">
+            The whole <code>web_data</code> folder as a <b>.zip</b>, <b>or</b> just the files that changed
+            (for example a new <code>district_cycles.csv</code>).
+          </div>
+        </label>
+        <ul class="fw-chosen" id="fw-chosen"></ul>
+
+        <label class="fw-opt"><input type="checkbox" name="compute_alerts" value="1" checked>
+          Recompute flood alerts after importing</label>
+        <label class="fw-opt"><input type="checkbox" name="real_data" value="1"{% if real_data %} checked{% endif %}>
+          <span>This is <b>real NISAR data</b> from the processing pipeline. The website stops labelling it “Demo data”.
+          <span class="muted">(Leave unticked for test or synthetic bundles.)</span></span></label>
+
+        <button class="fw-btn primary" type="submit" id="fw-submit" disabled>Upload and check →</button>
+        <p class="muted" style="margin-top:10px">Nothing is changed yet. The next page shows exactly what this
+        upload would add or change, and you confirm it there.</p>
+      </form>
+    </div>
+
+    <div class="fw-card">
+      <h2 class="fw-h">How it works</h2>
+      <ul style="margin:0;padding-left:18px;line-height:1.6">
+        <li><b>Loose files are merged</b> with the current data{% if has_current %} in <code>{{ web_data_name }}/</code>{% endif %}, so you only upload what changed.</li>
+        <li><b>Safe to repeat.</b> Re-uploading the same data changes nothing, and nothing is ever deleted.</li>
+        <li><b>All or nothing.</b> If any row is wrong, nothing is imported and the error names the file, line and column.</li>
+        <li>After importing, the files are saved as the current data (the previous version is backed up), so the daily update won't undo your import.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="fw-card">
+    <h2 class="fw-h">Files in a web_data bundle</h2>
+    <table class="fw-table">
+      <thead><tr><th>File</th><th></th><th>What it holds</th><th>Current data</th><th>Example</th></tr></thead>
+      <tbody>
+      {% for f in guide %}
+        <tr>
+          <td><code>{{ f.name }}</code></td>
+          <td>{% if f.required %}<span class="fw-badge required">required</span>{% else %}<span class="fw-badge optional">optional</span>{% endif %}</td>
+          <td>{{ f.help }}</td>
+          <td class="muted">{% if f.current %}{% if f.current.rows is not None %}{{ f.current.rows }} rows · {% endif %}updated {{ f.current.modified|date:"j M Y H:i" }}{% else %}—{% endif %}</td>
+          <td>{% if f.template %}<a href="{% url 'admin:floods_template' f.name %}">Download</a>{% else %}<span class="muted">—</span>{% endif %}</td>
+        </tr>
+      {% endfor %}
+        <tr>
+          <td><code>overlays/*.png</code></td>
+          <td><span class="fw-badge optional">optional</span></td>
+          <td>Map overlay images listed in <code>overlays.json</code>. Upload them alongside it.</td>
+          <td class="muted">—</td><td class="muted">—</td>
+        </tr>
+      </tbody>
+    </table>
+    <p class="muted" style="margin-top:10px">The <code>district</code> column accepts a district's slug (<code>sirajganj</code>), number, or English name.
+    Dates are <code>YYYY-MM-DD</code>; percentages are 0–100.</p>
+  </div>
+</div>
+
+<script>
+(function () {
+  var known = [{% for f in guide %}"{{ f.name }}"{% if not forloop.last %},{% endif %}{% endfor %}];
+  var input = document.getElementById("fw-files"), drop = document.getElementById("fw-drop"),
+      list = document.getElementById("fw-chosen"), submit = document.getElementById("fw-submit"),
+      form = document.getElementById("fw-upload");
+
+  function size(n) { return n > 1048576 ? (n / 1048576).toFixed(1) + " MB" : Math.max(1, Math.round(n / 1024)) + " KB"; }
+  function kind(name) {
+    var lower = name.toLowerCase();
+    if (lower.endsWith(".zip")) return "full bundle";
+    if (known.indexOf(name) !== -1) return "replaces current " + name;
+    if (lower.endsWith(".png")) return "overlay image";
+    return null;
+  }
+  function render() {
+    list.innerHTML = "";
+    var files = Array.prototype.slice.call(input.files), ok = files.length > 0;
+    var zips = files.filter(function (f) { return f.name.toLowerCase().endsWith(".zip"); }).length;
+    files.forEach(function (f) {
+      var k = kind(f.name), li = document.createElement("li");
+      if (!k) { ok = false; li.className = "bad"; k = "not a web_data file"; }
+      li.innerHTML = "<span></span><span class='muted'></span>";
+      li.children[0].textContent = f.name + " (" + size(f.size) + ")";
+      li.children[1].textContent = k;
+      list.appendChild(li);
+    });
+    if (zips && files.length > 1) {
+      ok = false;
+      var li = document.createElement("li"); li.className = "bad";
+      li.textContent = "Upload a .zip on its own, or loose files without a .zip.";
+      list.appendChild(li);
+    }
+    submit.disabled = !ok;
+  }
+  input.addEventListener("change", render);
+  ["dragenter", "dragover"].forEach(function (e) {
+    drop.addEventListener(e, function (ev) { ev.preventDefault(); drop.classList.add("over"); });
+  });
+  ["dragleave", "drop"].forEach(function (e) {
+    drop.addEventListener(e, function (ev) { ev.preventDefault(); drop.classList.remove("over"); });
+  });
+  drop.addEventListener("drop", function (ev) { input.files = ev.dataTransfer.files; render(); });
+  form.addEventListener("submit", function () { submit.disabled = true; submit.textContent = "Uploading and checking…"; });
+})();
+</script>
+{% endblock %}

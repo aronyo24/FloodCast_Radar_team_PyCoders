@@ -1,0 +1,517 @@
+{
+ "_about": "Static facts for the 64 Bangladesh districts (ADM2), keyed by geoBoundaries shapeName. Used by the importer to fill names, divisions and slugs that a bundle does not supply. Never overrides values the bundle provides.",
+ "districts": {
+  "Bagerhat": {
+   "slug": "bagerhat",
+   "name_en": "Bagerhat",
+   "name_bn": "বাগেরহাট",
+   "division": "Khulna",
+   "regime": "coastal",
+   "shape_id": "16705992B77600989823530"
+  },
+  "Bandarban": {
+   "slug": "bandarban",
+   "name_en": "Bandarban",
+   "name_bn": "বান্দরবান",
+   "division": "Chattogram",
+   "regime": "hill",
+   "shape_id": "16705992B23463827258150"
+  },
+  "Barguna": {
+   "slug": "barguna",
+   "name_en": "Barguna",
+   "name_bn": "বরগুনা",
+   "division": "Barishal",
+   "regime": "coastal",
+   "shape_id": "16705992B13795829103768"
+  },
+  "Barisal": {
+   "slug": "barishal",
+   "name_en": "Barishal",
+   "name_bn": "বরিশাল",
+   "division": "Barishal",
+   "regime": "delta",
+   "shape_id": "16705992B66943755852345"
+  },
+  "Bhola": {
+   "slug": "bhola",
+   "name_en": "Bhola",
+   "name_bn": "ভোলা",
+   "division": "Barishal",
+   "regime": "delta",
+   "shape_id": "16705992B37732832620169"
+  },
+  "Bogra": {
+   "slug": "bogura",
+   "name_en": "Bogura",
+   "name_bn": "বগুড়া",
+   "division": "Rajshahi",
+   "regime": "jamuna-char",
+   "shape_id": "16705992B87441692505107"
+  },
+  "Brahamanbaria": {
+   "slug": "brahmanbaria",
+   "name_en": "Brahmanbaria",
+   "name_bn": "ব্রাহ্মণবাড়িয়া",
+   "division": "Chattogram",
+   "regime": "meghna-haor",
+   "shape_id": "16705992B2831557138260"
+  },
+  "Chandpur": {
+   "slug": "chandpur",
+   "name_en": "Chandpur",
+   "name_bn": "চাঁদপুর",
+   "division": "Chattogram",
+   "regime": "padma",
+   "shape_id": "16705992B70711841490613"
+  },
+  "Chittagong": {
+   "slug": "chattogram",
+   "name_en": "Chattogram",
+   "name_bn": "চট্টগ্রাম",
+   "division": "Chattogram",
+   "regime": "hill",
+   "shape_id": "16705992B94200136889214"
+  },
+  "Chuadanga": {
+   "slug": "chuadanga",
+   "name_en": "Chuadanga",
+   "name_bn": "চুয়াডাঙ্গা",
+   "division": "Khulna",
+   "regime": "barind",
+   "shape_id": "16705992B19758630986204"
+  },
+  "Comilla": {
+   "slug": "cumilla",
+   "name_en": "Cumilla",
+   "name_bn": "কুমিল্লা",
+   "division": "Chattogram",
+   "regime": "meghna-haor",
+   "shape_id": "16705992B59490572634285"
+  },
+  "Cox's Bazar": {
+   "slug": "cox-s-bazar",
+   "name_en": "Cox's Bazar",
+   "name_bn": "কক্সবাজার",
+   "division": "Chattogram",
+   "regime": "coastal",
+   "shape_id": "16705992B34517682786426"
+  },
+  "Dhaka": {
+   "slug": "dhaka",
+   "name_en": "Dhaka",
+   "name_bn": "ঢাকা",
+   "division": "Dhaka",
+   "regime": "urban",
+   "shape_id": "16705992B90744549146712"
+  },
+  "Dinajpur": {
+   "slug": "dinajpur",
+   "name_en": "Dinajpur",
+   "name_bn": "দিনাজপুর",
+   "division": "Rangpur",
+   "regime": "barind",
+   "shape_id": "16705992B66423446659680"
+  },
+  "Faridpur": {
+   "slug": "faridpur",
+   "name_en": "Faridpur",
+   "name_bn": "ফরিদপুর",
+   "division": "Dhaka",
+   "regime": "padma",
+   "shape_id": "16705992B67131385183639"
+  },
+  "Feni": {
+   "slug": "feni",
+   "name_en": "Feni",
+   "name_bn": "ফেনী",
+   "division": "Chattogram",
+   "regime": "coastal",
+   "shape_id": "16705992B83268326466345"
+  },
+  "Gaibandha": {
+   "slug": "gaibandha",
+   "name_en": "Gaibandha",
+   "name_bn": "গাইবান্ধা",
+   "division": "Rangpur",
+   "regime": "jamuna-char",
+   "shape_id": "16705992B74857221285320"
+  },
+  "Gazipur": {
+   "slug": "gazipur",
+   "name_en": "Gazipur",
+   "name_bn": "গাজীপুর",
+   "division": "Dhaka",
+   "regime": "urban",
+   "shape_id": "16705992B50862305652789"
+  },
+  "Gopalganj": {
+   "slug": "gopalganj",
+   "name_en": "Gopalganj",
+   "name_bn": "গোপালগঞ্জ",
+   "division": "Dhaka",
+   "regime": "delta",
+   "shape_id": "16705992B87804307332289"
+  },
+  "Habiganj": {
+   "slug": "habiganj",
+   "name_en": "Habiganj",
+   "name_bn": "হবিগঞ্জ",
+   "division": "Sylhet",
+   "regime": "meghna-haor",
+   "shape_id": "16705992B7772300815487"
+  },
+  "Jamalpur": {
+   "slug": "jamalpur",
+   "name_en": "Jamalpur",
+   "name_bn": "জামালপুর",
+   "division": "Mymensingh",
+   "regime": "brahmaputra",
+   "shape_id": "16705992B65705561019803"
+  },
+  "Jessore": {
+   "slug": "jashore",
+   "name_en": "Jashore",
+   "name_bn": "যশোর",
+   "division": "Khulna",
+   "regime": "barind",
+   "shape_id": "16705992B28022870637862"
+  },
+  "Jhalokati": {
+   "slug": "jhalokathi",
+   "name_en": "Jhalokathi",
+   "name_bn": "ঝালকাঠি",
+   "division": "Barishal",
+   "regime": "delta",
+   "shape_id": "16705992B14602656752780"
+  },
+  "Jhenaidah": {
+   "slug": "jhenaidah",
+   "name_en": "Jhenaidah",
+   "name_bn": "ঝিনাইদহ",
+   "division": "Khulna",
+   "regime": "barind",
+   "shape_id": "16705992B77509092527129"
+  },
+  "Joypurhat": {
+   "slug": "joypurhat",
+   "name_en": "Joypurhat",
+   "name_bn": "জয়পুরহাট",
+   "division": "Rajshahi",
+   "regime": "barind",
+   "shape_id": "16705992B2288856744536"
+  },
+  "Khagrachhari": {
+   "slug": "khagrachhari",
+   "name_en": "Khagrachhari",
+   "name_bn": "খাগড়াছড়ি",
+   "division": "Chattogram",
+   "regime": "hill",
+   "shape_id": "16705992B35326431749719"
+  },
+  "Khulna": {
+   "slug": "khulna",
+   "name_en": "Khulna",
+   "name_bn": "খুলনা",
+   "division": "Khulna",
+   "regime": "coastal",
+   "shape_id": "16705992B21968895988188"
+  },
+  "Kishoreganj": {
+   "slug": "kishoreganj",
+   "name_en": "Kishoreganj",
+   "name_bn": "কিশোরগঞ্জ",
+   "division": "Dhaka",
+   "regime": "meghna-haor",
+   "shape_id": "16705992B82604838368079"
+  },
+  "Kurigram": {
+   "slug": "kurigram",
+   "name_en": "Kurigram",
+   "name_bn": "কুড়িগ্রাম",
+   "division": "Rangpur",
+   "regime": "brahmaputra",
+   "shape_id": "16705992B97164497642406"
+  },
+  "Kushtia": {
+   "slug": "kushtia",
+   "name_en": "Kushtia",
+   "name_bn": "কুষ্টিয়া",
+   "division": "Khulna",
+   "regime": "padma",
+   "shape_id": "16705992B21124734124900"
+  },
+  "Lakshmipur": {
+   "slug": "lakshmipur",
+   "name_en": "Lakshmipur",
+   "name_bn": "লক্ষ্মীপুর",
+   "division": "Chattogram",
+   "regime": "delta",
+   "shape_id": "16705992B31973889793084"
+  },
+  "Lalmonirhat": {
+   "slug": "lalmonirhat",
+   "name_en": "Lalmonirhat",
+   "name_bn": "লালমনিরহাট",
+   "division": "Rangpur",
+   "regime": "brahmaputra",
+   "shape_id": "16705992B84214314165922"
+  },
+  "Madaripur": {
+   "slug": "madaripur",
+   "name_en": "Madaripur",
+   "name_bn": "মাদারিপুর",
+   "division": "Dhaka",
+   "regime": "padma",
+   "shape_id": "16705992B87985099055959"
+  },
+  "Magura": {
+   "slug": "magura",
+   "name_en": "Magura",
+   "name_bn": "মাগুরা",
+   "division": "Khulna",
+   "regime": "barind",
+   "shape_id": "16705992B78415132034426"
+  },
+  "Manikganj": {
+   "slug": "manikganj",
+   "name_en": "Manikganj",
+   "name_bn": "মানিকগঞ্জ",
+   "division": "Dhaka",
+   "regime": "jamuna-char",
+   "shape_id": "16705992B79131283702140"
+  },
+  "Maulvibazar": {
+   "slug": "moulvibazar",
+   "name_en": "Moulvibazar",
+   "name_bn": "মৌলভীবাজার",
+   "division": "Sylhet",
+   "regime": "meghna-haor",
+   "shape_id": "16705992B62450131352427"
+  },
+  "Meherpur": {
+   "slug": "meherpur",
+   "name_en": "Meherpur",
+   "name_bn": "মেহেরপুর",
+   "division": "Khulna",
+   "regime": "barind",
+   "shape_id": "16705992B11914188004823"
+  },
+  "Munshiganj": {
+   "slug": "munshiganj",
+   "name_en": "Munshiganj",
+   "name_bn": "মুন্সীগঞ্জ",
+   "division": "Dhaka",
+   "regime": "padma",
+   "shape_id": "16705992B99884694518333"
+  },
+  "Mymensingh": {
+   "slug": "mymensingh",
+   "name_en": "Mymensingh",
+   "name_bn": "ময়মনসিংহ",
+   "division": "Mymensingh",
+   "regime": "brahmaputra",
+   "shape_id": "16705992B54511139091050"
+  },
+  "Naogaon": {
+   "slug": "naogaon",
+   "name_en": "Naogaon",
+   "name_bn": "নওগাঁ",
+   "division": "Rajshahi",
+   "regime": "barind",
+   "shape_id": "16705992B34203284467157"
+  },
+  "Narail": {
+   "slug": "narail",
+   "name_en": "Narail",
+   "name_bn": "নড়াইল",
+   "division": "Khulna",
+   "regime": "delta",
+   "shape_id": "16705992B56503274196630"
+  },
+  "Narayanganj": {
+   "slug": "narayanganj",
+   "name_en": "Narayanganj",
+   "name_bn": "নারায়ণগঞ্জ",
+   "division": "Dhaka",
+   "regime": "urban",
+   "shape_id": "16705992B28796010313895"
+  },
+  "Narsingdi": {
+   "slug": "narsingdi",
+   "name_en": "Narsingdi",
+   "name_bn": "নরসিংদী",
+   "division": "Dhaka",
+   "regime": "meghna-haor",
+   "shape_id": "16705992B95243043657125"
+  },
+  "Natore": {
+   "slug": "natore",
+   "name_en": "Natore",
+   "name_bn": "নাটোর",
+   "division": "Rajshahi",
+   "regime": "jamuna-char",
+   "shape_id": "16705992B43065208682222"
+  },
+  "Nawabganj": {
+   "slug": "chapai-nawabganj",
+   "name_en": "Chapai Nawabganj",
+   "name_bn": "চাঁপাইনবাবগঞ্জ",
+   "division": "Rajshahi",
+   "regime": "padma",
+   "shape_id": "16705992B76725860359822"
+  },
+  "Netrakona": {
+   "slug": "netrokona",
+   "name_en": "Netrokona",
+   "name_bn": "নেত্রকোণা",
+   "division": "Mymensingh",
+   "regime": "meghna-haor",
+   "shape_id": "16705992B47191620994273"
+  },
+  "Nilphamari": {
+   "slug": "nilphamari",
+   "name_en": "Nilphamari",
+   "name_bn": "নীলফামারী",
+   "division": "Rangpur",
+   "regime": "brahmaputra",
+   "shape_id": "16705992B74406959438199"
+  },
+  "Noakhali": {
+   "slug": "noakhali",
+   "name_en": "Noakhali",
+   "name_bn": "নোয়াখালী",
+   "division": "Chattogram",
+   "regime": "delta",
+   "shape_id": "16705992B96773862439533"
+  },
+  "Pabna": {
+   "slug": "pabna",
+   "name_en": "Pabna",
+   "name_bn": "পাবনা",
+   "division": "Rajshahi",
+   "regime": "jamuna-char",
+   "shape_id": "16705992B46384724638491"
+  },
+  "Panchagarh": {
+   "slug": "panchagarh",
+   "name_en": "Panchagarh",
+   "name_bn": "পঞ্চগড়",
+   "division": "Rangpur",
+   "regime": "barind",
+   "shape_id": "16705992B66536058617583"
+  },
+  "Patuakhali": {
+   "slug": "patuakhali",
+   "name_en": "Patuakhali",
+   "name_bn": "পটুয়াখালী",
+   "division": "Barishal",
+   "regime": "coastal",
+   "shape_id": "16705992B49808088196813"
+  },
+  "Pirojpur": {
+   "slug": "pirojpur",
+   "name_en": "Pirojpur",
+   "name_bn": "পিরোজপুর",
+   "division": "Barishal",
+   "regime": "delta",
+   "shape_id": "16705992B46028667424095"
+  },
+  "Rajbari": {
+   "slug": "rajbari",
+   "name_en": "Rajbari",
+   "name_bn": "রাজবাড়ী",
+   "division": "Dhaka",
+   "regime": "padma",
+   "shape_id": "16705992B48875454234518"
+  },
+  "Rajshahi": {
+   "slug": "rajshahi",
+   "name_en": "Rajshahi",
+   "name_bn": "রাজশাহী",
+   "division": "Rajshahi",
+   "regime": "padma",
+   "shape_id": "16705992B51815672792645"
+  },
+  "Rangamati": {
+   "slug": "rangamati",
+   "name_en": "Rangamati",
+   "name_bn": "রাঙ্গামাটি",
+   "division": "Chattogram",
+   "regime": "hill",
+   "shape_id": "16705992B35610473312733"
+  },
+  "Rangpur": {
+   "slug": "rangpur",
+   "name_en": "Rangpur",
+   "name_bn": "রংপুর",
+   "division": "Rangpur",
+   "regime": "brahmaputra",
+   "shape_id": "16705992B34260815515495"
+  },
+  "Satkhira": {
+   "slug": "satkhira",
+   "name_en": "Satkhira",
+   "name_bn": "সাতক্ষীরা",
+   "division": "Khulna",
+   "regime": "coastal",
+   "shape_id": "16705992B60176987344662"
+  },
+  "Shariatpur": {
+   "slug": "shariatpur",
+   "name_en": "Shariatpur",
+   "name_bn": "শরীয়তপুর",
+   "division": "Dhaka",
+   "regime": "padma",
+   "shape_id": "16705992B92388810566131"
+  },
+  "Sherpur": {
+   "slug": "sherpur",
+   "name_en": "Sherpur",
+   "name_bn": "শেরপুর",
+   "division": "Mymensingh",
+   "regime": "brahmaputra",
+   "shape_id": "16705992B90842308963557"
+  },
+  "Sirajganj": {
+   "slug": "sirajganj",
+   "name_en": "Sirajganj",
+   "name_bn": "সিরাজগঞ্জ",
+   "division": "Rajshahi",
+   "regime": "jamuna-char",
+   "shape_id": "16705992B55394931042500"
+  },
+  "Sunamganj": {
+   "slug": "sunamganj",
+   "name_en": "Sunamganj",
+   "name_bn": "সুনামগঞ্জ",
+   "division": "Sylhet",
+   "regime": "meghna-haor",
+   "shape_id": "16705992B61059366245275"
+  },
+  "Sylhet": {
+   "slug": "sylhet",
+   "name_en": "Sylhet",
+   "name_bn": "সিলেট",
+   "division": "Sylhet",
+   "regime": "meghna-haor",
+   "shape_id": "16705992B47932115867008"
+  },
+  "Tangail": {
+   "slug": "tangail",
+   "name_en": "Tangail",
+   "name_bn": "টাঙ্গাইল",
+   "division": "Dhaka",
+   "regime": "jamuna-char",
+   "shape_id": "16705992B55867939933107"
+  },
+  "Thakurgaon": {
+   "slug": "thakurgaon",
+   "name_en": "Thakurgaon",
+   "name_bn": "ঠাকুরগাঁও",
+   "division": "Rangpur",
+   "regime": "barind",
+   "shape_id": "16705992B44482388014877"
+  }
+ }
+}

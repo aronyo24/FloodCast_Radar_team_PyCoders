@@ -1,0 +1,123 @@
+{% extends "admin/index.html" %}
+{% load humanize %}
+
+{% block extrastyle %}{{ block.super }}{% include "admin/floodwatch/_styles.html" %}{% endblock %}
+
+{% block content %}
+<div class="fw">
+  {% if fw.latest_cycle is None %}
+    <div class="fw-banner info">
+      <div><strong>No flood data yet.</strong>
+      Start with <a href="{% url 'admin:floods_import' %}">Import data</a>: upload the <code>web_data</code> folder from the Colab notebook as a .zip.</div>
+    </div>
+  {% else %}
+    {% if fw.demo_data %}
+      <div class="fw-banner warn"><div><strong>The site is showing demo data.</strong>
+      The figures are labelled “Demo data” until you import a bundle whose <code>meta.json</code> says <code>"demo_data": false</code>.</div></div>
+    {% endif %}
+    {% if fw.stale %}
+      <div class="fw-banner warn"><div><strong>The newest radar image is {{ fw.age_days }} days old.</strong>
+      NISAR passes every 12 days, so a newer image is overdue. Check the pipeline, then import the new data.</div></div>
+    {% endif %}
+  {% endif %}
+
+  <h2 class="fw-h">Quick actions</h2>
+  <div class="fw-actions">
+    {% if fw.can_manage %}
+      <a class="fw-btn primary" href="{% url 'admin:floods_import' %}">⬆ Import data</a>
+      <form method="post" action="{% url 'admin:floods_check_now' %}" data-busy="Checking…">{% csrf_token %}
+        <button class="fw-btn" type="submit" title="Run the update job now: pipeline / download, import, alerts">⟳ Check for new data now</button>
+      </form>
+      <form method="post" action="{% url 'admin:floods_recompute_alerts' %}" data-busy="Recomputing…">{% csrf_token %}
+        <button class="fw-btn" type="submit" title="Re-apply the alert rules to the newest cycle">⚑ Recompute alerts</button>
+      </form>
+      <a class="fw-btn" href="{% url 'admin:floods_download' %}">⬇ Download current data (.zip)</a>
+    {% endif %}
+    <a class="fw-btn" href="{% url 'admin:floods_floodalert_changelist' %}?active__exact=1">Open alerts</a>
+    <a class="fw-btn" href="{% url 'admin:floods_districtcycle_changelist' %}">Cycle statistics</a>
+    <a class="fw-btn" href="{% url 'admin:floods_updaterun_changelist' %}">Update history</a>
+  </div>
+
+  <h2 class="fw-h">Current data</h2>
+  <div class="fw-grid">
+    <div class="fw-card">
+      <div class="label">Latest cycle</div>
+      <div class="value">{{ fw.latest_cycle|date:"j M Y"|default:"—" }}</div>
+      <div class="sub">{{ fw.cycle_count }} cycle{{ fw.cycle_count|pluralize }} · {{ fw.district_count }} districts</div>
+    </div>
+    <div class="fw-card">
+      <div class="label">Newest radar image</div>
+      <div class="value">{{ fw.last_image|date:"j M Y"|default:"—" }}</div>
+      <div class="sub">{% if fw.age_days is not None %}{{ fw.age_days }} day{{ fw.age_days|pluralize }} ago{% else %}—{% endif %}</div>
+    </div>
+    <div class="fw-card">
+      <div class="label">Flooded area (latest)</div>
+      <div class="value">{% if fw.national %}{{ fw.national.flood_km2_est|floatformat:0|intcomma }} km²{% else %}—{% endif %}</div>
+      <div class="sub">{% if fw.national %}{{ fw.national.districts_seen }} districts seen{% else %}no national totals{% endif %}</div>
+    </div>
+    <div class="fw-card red">
+      <div class="label">Red alerts</div>
+      <div class="value">{{ fw.red_count }}</div>
+      <div class="sub">severe flooding</div>
+    </div>
+    <div class="fw-card orange">
+      <div class="label">Orange alerts</div>
+      <div class="value">{{ fw.orange_count }}</div>
+      <div class="sub">warning level</div>
+    </div>
+  </div>
+
+  <div class="fw-grid wide">
+    <div class="fw-card">
+      <h2 class="fw-h">Worst-hit districts (open alerts)</h2>
+      {% if fw.top_alerts %}
+      <table class="fw-table">
+        <thead><tr><th>District</th><th>Level</th><th class="num">Flooded</th><th></th></tr></thead>
+        <tbody>
+        {% for a in fw.top_alerts %}
+          <tr>
+            <td><a href="{% url 'admin:floods_floodalert_change' a.pk %}">{{ a.district.name_en }}</a></td>
+            <td><span class="fw-badge {{ a.level }}">{{ a.get_level_display }}</span></td>
+            <td class="num">{{ a.flood_pct|floatformat:1 }}%</td>
+            <td style="width:30%"><div class="fw-bar"><span class="{{ a.level }}" style="width:{% widthratio a.flood_pct 100 100 %}%"></span></div></td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+      {% else %}<p class="muted">No open alerts.</p>{% endif %}
+    </div>
+
+    <div class="fw-card">
+      <h2 class="fw-h">Recent updates</h2>
+      {% if fw.runs %}
+      <table class="fw-table">
+        <thead><tr><th>When</th><th>Result</th><th>By</th><th class="num">Images</th></tr></thead>
+        <tbody>
+        {% for r in fw.runs %}
+          <tr>
+            <td><a href="{% url 'admin:floods_updaterun_change' r.pk %}" title="{{ r.started_at }}">{{ r.started_at|naturaltime }}</a></td>
+            <td><span class="fw-badge {{ r.status }}">{{ r.get_status_display }}</span></td>
+            <td class="muted">{{ r.triggered_by|default:"—" }}</td>
+            <td class="num">{{ r.new_images }}</td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+      {% else %}<p class="muted">No update runs yet.</p>{% endif %}
+      <p class="muted" style="margin-top:10px">{{ fw.scheduler }}.
+      {% if fw.datasource and fw.datasource.imported_at %}Last import {{ fw.datasource.imported_at|naturaltime }}.{% endif %}</p>
+    </div>
+  </div>
+
+  <h2 class="fw-h" style="margin-top:8px">All records</h2>
+</div>
+{{ block.super }}
+<script>
+  // Disable a quick-action button while the server works, so it isn't pressed twice.
+  document.querySelectorAll(".fw form[data-busy]").forEach(function (f) {
+    f.addEventListener("submit", function () {
+      var b = f.querySelector("button"); b.disabled = true; b.textContent = f.dataset.busy;
+    });
+  });
+</script>
+{% endblock %}

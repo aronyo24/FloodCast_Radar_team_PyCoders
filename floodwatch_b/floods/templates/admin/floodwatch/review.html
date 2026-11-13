@@ -1,0 +1,95 @@
+{% extends "admin/base_site.html" %}
+
+{% block extrastyle %}{{ block.super }}{% include "admin/floodwatch/_styles.html" %}{% endblock %}
+
+{% block breadcrumbs %}
+<div class="breadcrumbs"><a href="{% url 'admin:index' %}">Dashboard</a> › <a href="{% url 'admin:floods_import' %}">Import data</a> › Check</div>
+{% endblock %}
+
+{% block content %}
+<div class="fw" id="content-main">
+  <ol class="fw-steps">
+    <li class="done">1 · Upload ✓</li><li class="on">2 · Check</li><li>3 · Import</li>
+  </ol>
+
+  {% if not summary.ok %}
+    <div class="fw-banner error"><div>
+      <strong>{{ summary.headline }} Nothing was changed.</strong>
+      Fix the problem below and upload again.
+      <pre class="fw-error">{{ summary.error }}</pre>
+    </div></div>
+  {% elif summary.changed %}
+    <div class="fw-banner ok"><div><strong>Looks good. Ready to import.</strong>{{ summary.headline }}</div></div>
+  {% else %}
+    <div class="fw-banner info"><div><strong>{{ summary.headline }}</strong>
+      Importing again is harmless, but it won't change anything.</div></div>
+  {% endif %}
+
+  <div class="fw-grid wide">
+    {% if summary.ok %}
+    <div class="fw-card">
+      <h2 class="fw-h">What would change</h2>
+      <table class="fw-table">
+        <thead><tr><th>Records</th><th class="num">New</th><th class="num">Changed</th><th class="num">Unchanged</th></tr></thead>
+        <tbody>
+        {% for c in summary.counts %}
+          <tr>
+            <td>{{ c.label }}</td>
+            <td class="num {% if c.created %}pos{% endif %}">{{ c.created }}</td>
+            <td class="num {% if c.updated %}chg{% endif %}">{{ c.updated }}</td>
+            <td class="num muted">{{ c.unchanged }}</td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+      {% if summary.alerts %}
+        <p style="margin-top:12px"><b>Alerts</b> for cycle {{ summary.alerts.cycle }}:
+          {{ summary.alerts.opened }} would open, {{ summary.alerts.updated }} change,
+          {{ summary.alerts.closed }} close, {{ summary.alerts.unchanged }} stay the same.</p>
+      {% elif not with_alerts %}
+        <p class="muted" style="margin-top:12px">Alerts will not be recomputed (you can do that from the dashboard).</p>
+      {% endif %}
+      {% if summary.latest_cycle %}<p class="muted">Latest cycle after import: {{ summary.latest_cycle }}.</p>{% endif %}
+    </div>
+    {% endif %}
+
+    <div class="fw-card">
+      <h2 class="fw-h">Files in this import</h2>
+      <table class="fw-table">
+        <tbody>
+        {% for f in files %}
+          <tr>
+            <td><code>{{ f.name }}</code></td>
+            <td class="num">{% if f.origin == "uploaded" %}<span class="fw-badge uploaded">uploaded</span>{% else %}<span class="fw-badge kept">kept from current data</span>{% endif %}</td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  {% if summary.warnings %}
+    <div class="fw-banner warn"><div><strong>Warnings</strong>
+      <ul style="margin:4px 0 0;padding-left:18px">{% for w in summary.warnings %}<li>{{ w }}</li>{% endfor %}</ul>
+    </div></div>
+  {% endif %}
+
+  <form method="post" class="fw-actions" id="fw-confirm">{% csrf_token %}
+    {% if summary.ok %}
+      <button class="fw-btn primary" type="submit" name="action" value="import">✓ Import now</button>
+    {% endif %}
+    <button class="fw-btn {% if summary.ok %}danger{% endif %}" type="submit" name="action" value="cancel" formnovalidate>
+      {% if summary.ok %}Cancel{% else %}Discard and upload again{% endif %}</button>
+  </form>
+</div>
+<script>
+  document.getElementById("fw-confirm").addEventListener("submit", function (ev) {
+    var b = ev.submitter;
+    if (b && b.value === "import") {
+      // Keep the clicked button's value: add it as a hidden field before disabling.
+      var h = document.createElement("input"); h.type = "hidden"; h.name = "action"; h.value = "import";
+      this.appendChild(h); b.disabled = true; b.textContent = "Importing…";
+    }
+  });
+</script>
+{% endblock %}

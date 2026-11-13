@@ -1,0 +1,14 @@
+frame,images,epsg,water_cutoff_db,cutoff_source,contrast_db,normal_water_method,first,last,water_share,check
+T019D_F075,11,32645,-68.12,own Otsu cutoff,121.4,water in >= 90% of 11 images,2026-06-27,2026-11-06,0.013,ok
+T019D_F076,17,32645,-68.86,own Otsu cutoff,121.1,water in >= 90% of 17 images,2026-06-27,2026-11-06,0.01,ok
+T019D_F077,15,32645,-10.75,own Otsu cutoff,11.2,water in >= 90% of 15 images,2026-06-27,2026-11-06,0.209,ok
+T019D_F078,4,32645,-31.05,own Otsu cutoff,32.1,water in >= 90% of 4 images,2026-08-26,2026-10-01,0.026,ok
+T069A_F012,11,32646,-49.12,borrowed cutoff (own contrast only 12.8 dB),12.8,water in >= 90% of 11 images,2026-06-18,2026-11-09,0.0,ok
+T069A_F013,11,32646,-11.61,own Otsu cutoff,11.7,water in >= 90% of 11 images,2026-06-18,2026-11-09,0.333,ok
+T069A_F014,11,32646,-10.55,own Otsu cutoff,9.4,water in >= 90% of 11 images,2026-06-18,2026-11-09,0.249,ok
+T069A_F015,11,32646,-69.09,own Otsu cutoff,125.3,water in >= 90% of 11 images,2026-06-18,2026-11-09,0.002,ok
+T091D_F076,11,32646,-68.64,own Otsu cutoff,119.8,water in >= 90% of 11 images,2026-06-20,2026-10-30,0.041,ok
+T091D_F077,17,32646,-69.96,own Otsu cutoff,117.9,water in >= 90% of 17 images,2026-06-20,2026-10-30,0.018,ok
+T091D_F078,11,32645,-21.9,own Otsu cutoff,16.2,water in >= 90% of 11 images,2026-06-20,2026-10-30,0.048,ok
+T120D_F075,13,32645,-67.2,own Otsu cutoff,121.1,water in >= 90% of 13 images,2026-06-22,2026-11-01,0.008,ok
+T120D_F076,7,32645,-28.25,own Otsu cutoff,39.8,water in >= 90% of 7 images,2026-06-22,2026-09-26,0.027,ok

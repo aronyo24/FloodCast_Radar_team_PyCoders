@@ -1,0 +1,69 @@
+<style>
+  /* Built on Django admin's CSS variables, so light and dark themes both work. */
+  .fw { --fw-red: #c62828; --fw-orange: #e07b00; --fw-green: #2e7d32; --fw-blue: #1565c0; --fw-radius: 10px; }
+  .fw h2.fw-h { font-size: 1rem; margin: 0 0 10px; color: var(--body-fg); font-weight: 600; background: none; padding: 0; text-transform: none; letter-spacing: 0; }
+  .fw-grid { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); margin-bottom: 18px; }
+  .fw-grid.wide { grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); }
+  .fw-card { border: 1px solid var(--hairline-color); border-radius: var(--fw-radius); padding: 14px 16px; background: var(--body-bg); }
+  .fw-card .label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: .04em; color: var(--body-quiet-color); }
+  .fw-card .value { font-size: 1.6rem; font-weight: 600; margin: 4px 0 2px; color: var(--body-fg); line-height: 1.2; }
+  .fw-card .sub { font-size: 0.8rem; color: var(--body-quiet-color); }
+  .fw-card.red .value { color: var(--fw-red); }
+  .fw-card.orange .value { color: var(--fw-orange); }
+
+  .fw-banner { border-radius: var(--fw-radius); padding: 12px 16px; margin-bottom: 16px; border: 1px solid var(--hairline-color); display: flex; gap: 12px; align-items: flex-start; }
+  .fw-banner strong { display: block; margin-bottom: 2px; }
+  .fw-banner.warn { background: var(--message-warning-bg); }
+  .fw-banner.error { background: var(--message-error-bg); }
+  .fw-banner.ok { background: var(--message-success-bg); }
+  .fw-banner.info { background: var(--darkened-bg); }
+
+  .fw-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 22px; }
+  .fw-actions form { margin: 0; }
+  .fw-btn, .fw a.fw-btn:link, .fw a.fw-btn:visited {
+    display: inline-flex; align-items: center; gap: 8px; padding: 10px 16px; border-radius: 8px;
+    font-size: 0.9rem; font-weight: 600; cursor: pointer; border: 1px solid var(--hairline-color);
+    background: var(--body-bg); color: var(--body-fg); text-decoration: none; line-height: 1.2;
+  }
+  .fw-btn:hover { background: var(--darkened-bg); }
+  .fw-btn.primary, .fw a.fw-btn.primary:link, .fw a.fw-btn.primary:visited { background: var(--button-bg); border-color: var(--button-bg); color: var(--button-fg); }
+  .fw-btn.primary:hover { background: var(--button-hover-bg); }
+  .fw-btn.danger { color: var(--error-fg); }
+  .fw-btn[disabled] { opacity: .6; cursor: progress; }
+
+  .fw-badge { display: inline-block; padding: 2px 9px; border-radius: 999px; font-size: 0.75rem; font-weight: 600; color: #fff; white-space: nowrap; }
+  .fw-badge.red, .fw-badge.failed { background: var(--fw-red); }
+  .fw-badge.orange { background: var(--fw-orange); }
+  .fw-badge.success { background: var(--fw-green); }
+  .fw-badge.no_change, .fw-badge.kept { background: #6b7280; }
+  .fw-badge.running, .fw-badge.uploaded { background: var(--fw-blue); }
+  .fw-badge.required { background: var(--fw-red); }
+  .fw-badge.optional { background: #6b7280; }
+
+  .fw table.fw-table { width: 100%; border-collapse: collapse; }
+  .fw table.fw-table th, .fw table.fw-table td { padding: 7px 8px; border-bottom: 1px solid var(--hairline-color); text-align: left; vertical-align: top; font-size: 0.85rem; }
+  .fw table.fw-table th { color: var(--body-quiet-color); font-weight: 600; background: none; }
+  .fw table.fw-table td.num, .fw table.fw-table th.num { text-align: right; font-variant-numeric: tabular-nums; }
+  .fw .muted { color: var(--body-quiet-color); }
+  .fw .pos { color: var(--fw-green); font-weight: 600; }
+  .fw .chg { color: var(--fw-blue); font-weight: 600; }
+  .fw pre.fw-error { white-space: pre-wrap; background: var(--darkened-bg); padding: 10px 12px; border-radius: 8px; font-size: 0.85rem; margin: 8px 0 0; }
+
+  .fw-steps { display: flex; gap: 8px; margin: 0 0 18px; padding: 0; list-style: none; flex-wrap: wrap; }
+  .fw-steps li { padding: 6px 12px; border-radius: 999px; background: var(--darkened-bg); color: var(--body-quiet-color); font-size: 0.8rem; font-weight: 600; margin: 0; }
+  .fw-steps li.on { background: var(--button-bg); color: var(--button-fg); }
+  .fw-steps li.done { color: var(--fw-green); }
+
+  .fw-drop { border: 2px dashed var(--hairline-color); border-radius: var(--fw-radius); padding: 34px 20px; text-align: center; cursor: pointer; transition: border-color .15s, background .15s; }
+  .fw-drop:hover, .fw-drop.over { border-color: var(--button-bg); background: var(--darkened-bg); }
+  .fw-drop .big { font-size: 1.05rem; font-weight: 600; color: var(--body-fg); }
+  .fw-drop input[type=file] { display: none; }
+  .fw-chosen { list-style: none; padding: 0; margin: 12px 0 0; }
+  .fw-chosen li { padding: 6px 0; border-bottom: 1px solid var(--hairline-color); display: flex; justify-content: space-between; gap: 10px; font-size: 0.85rem; }
+  .fw-chosen li.bad { color: var(--error-fg); }
+  .fw-opt { margin: 14px 0; display: flex; gap: 8px; align-items: center; }
+  .fw-bar { height: 6px; background: var(--darkened-bg); border-radius: 3px; overflow: hidden; min-width: 60px; }
+  .fw-bar span { display: block; height: 100%; background: var(--fw-orange); }
+  .fw-bar span.red { background: var(--fw-red); }
+  @media (max-width: 767px) { .fw-grid { grid-template-columns: 1fr 1fr; } .fw-card .value { font-size: 1.3rem; } }
+</style>

@@ -1,0 +1,30 @@
+# ---- secrets: never commit ----
+.env
+.env.*
+!.env.example
+
+# ---- databases (local SQLite + any copies) ----
+*.sqlite3
+*.sqlite3-journal
+*.db
+db.sqlite3*
+web_data_backups/
+
+# ---- Python ----
+nenv/
+venv/
+.venv/
+__pycache__/
+*.pyc
+
+# ---- generated at runtime / build ----
+# media/ is rebuilt from web_data/ by `manage.py restore_overlays` (see Procfile).
+media/
+staticfiles/
+.scheduler.lock
+*.zip
+web_data.new/
+web_data.old/
+
+# web_data/ IS committed: Heroku imports it on first deploy and restores the
+# overlay PNGs from it on every dyno start.

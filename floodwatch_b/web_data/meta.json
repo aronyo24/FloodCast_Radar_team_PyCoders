@@ -1,0 +1,13 @@
+{
+ "generated_utc": "2026-11-10T16:05:05+00:00",
+ "period": [
+  "2026-06-17",
+  "2026-11-10"
+ ],
+ "cycle_days": 12,
+ "pixel_average": 8,
+ "persistence": 0.9,
+ "data": "NASA-ISRO NISAR L2 GCOV, PROVISIONAL, via ASF DAAC",
+ "boundaries": "geoBoundaries BGD ADM2 (CC BY 4.0)",
+ "demo_data": false
+}
